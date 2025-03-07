@@ -2,6 +2,7 @@
 
 import argparse
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--readme', type=str, required=True)
 parser.add_argument('--tests-output', type=str, required=True)

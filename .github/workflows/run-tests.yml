@@ -3,7 +3,9 @@ name: Run tests
 on:
   push:
     branches: [master]
-    paths: /*.py
+    paths:
+      - '/*.py'
+      - '/.github/update_readme.py'
 
 jobs:
   run_tests:

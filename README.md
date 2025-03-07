@@ -30,6 +30,13 @@ Overall, using **pypng** seems to be most promising. The downside of it is that 
 - **tifffile** does not directly support chunked reading. However, it *does* support reading TIFF files via memory mapping, which can be used to leverage chunked computation of the histogram. This is somewhat slower than reading an image into memory directly.
 - There seem to be no useful alternatives out there.
 
+## Test results
+
+```
+<!-- BEGIN TEST OUTPUT -->
+<!-- END TEST OUTPUT -->
+```
+
 # See also
 
 - [Writing a (simple) PNG decoder might be easier than you think](https://pyokagan.name/blog/2019-10-14-png/)
