@@ -69,7 +69,7 @@ def test_pypng():
     with get_peak_memory_usage() as peak_memory_usage:
         reader = png.Reader(filename='test-data/img1.png')
         width, height, pixels, metadata = reader.asDirect()
-        hist2 = np.zeros(256)
+        hist2 = np.zeros(256, int)
         for row in pixels:
             hist2 += get_hist(np.uint8(row))
     assert int(peak_memory_usage) < get_image_size_nbytes('test-data/img1.png'), 'Memory limit exceeded'
