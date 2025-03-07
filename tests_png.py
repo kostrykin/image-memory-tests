@@ -3,7 +3,10 @@ import png
 import pytest
 from PIL import Image
 
-from tools import get_peak_memory_usage
+from tools import (
+    get_hist,
+    get_peak_memory_usage,
+)
 
 
 def get_image_size_nbytes(filepath):
@@ -13,13 +16,6 @@ def get_image_size_nbytes(filepath):
 def get_image_hist(filepath):
     arr = np.asarray(Image.open(filepath))
     return get_hist(arr)
-
-
-def get_hist(array):
-    hist = np.zeros(256)
-    for value in range(len(hist)):
-        hist[value] += (array == value).sum()
-    return hist
 
 
 def test_full_image_load():

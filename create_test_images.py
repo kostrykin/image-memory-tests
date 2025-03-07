@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import numpy as np
+import tifffile
 from PIL import Image
 
 
@@ -12,3 +13,4 @@ assert img1.nbytes == 30 * 1024 * 1024, 'Unexpected image size'
 
 # Write the image files
 Image.fromarray(img1).save('test-data/img1.png')
+tifffile.imwrite('test-data/img1.tiff', img1)

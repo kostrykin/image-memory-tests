@@ -31,3 +31,10 @@ def get_peak_memory_usage():
 
         reader = memray.FileReader(temp_filepath)
         result.value = sum(r.size for r in reader.get_high_watermark_allocation_records(merge_threads=True))
+
+
+def get_hist(array):
+    hist = np.zeros(256)
+    for value in range(len(hist)):
+        hist[value] += (array == value).sum()
+    return hist
