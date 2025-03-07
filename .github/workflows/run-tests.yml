@@ -25,7 +25,10 @@ jobs:
           pip install -r requirements.txt
 
       - run: |
-          pytest -s --durations=0 tests_*.py #>> tests-output.txt
+          python create_test_images.py
+
+      - run: |
+          pytest -s --durations=0 tests_*.py >> tests-output.txt
 
       - run: |
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt
