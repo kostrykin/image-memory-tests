@@ -4,8 +4,8 @@ on:
   push:
     branches: [master]
     paths:
-      - '/*.py'
-      - '/.github/update_readme.py'
+      - '**.py'
+      - '.github/workflows/run-tests.yml'
 
 jobs:
   run_tests:
