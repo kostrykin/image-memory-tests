@@ -24,13 +24,17 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - run: |
+      - name: Create test images
+        run: |
+          mkdir test-data
           python create_test_images.py
 
-      - run: |
+      - name: Run tests
+        run: |
           pytest -s --durations=0 tests_*.py >> tests-output.txt
 
-      - run: |
+      - name: Update README.md
+        run: |
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt
           rm tests-output.txt
 
