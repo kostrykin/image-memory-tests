@@ -34,6 +34,24 @@ Overall, using **pypng** seems to be most promising. The downside of it is that 
 
 ```
 <!-- BEGIN TEST OUTPUT -->
+============================= test session starts ==============================
+platform linux -- Python 3.12.9, pytest-8.3.5, pluggy-1.5.0
+rootdir: /home/runner/work/image-memory-tests/image-memory-tests
+collected 6 items
+
+tests_png.py ....
+tests_tiff.py ..
+
+============================== slowest durations ===============================
+28.00s call     tests_png.py::test_pypng
+14.21s call     tests_tiff.py::test_tifffile_patchwise
+0.27s call     tests_png.py::test_pil_histogram
+0.25s call     tests_png.py::test_pil_crop
+0.17s call     tests_png.py::test_full_image_load
+0.02s call     tests_tiff.py::test_tifffile_segment
+
+(12 durations < 0.005s hidden.  Use -vv to show these durations.)
+============================== 6 passed in 43.10s ==============================
 <!-- END TEST OUTPUT -->
 ```
 
