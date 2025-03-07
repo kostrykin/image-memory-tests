@@ -24,7 +24,9 @@ for line in readme.split('\n'):
         lines.append(line)
     if line == '<!-- BEGIN TEST OUTPUT -->':
         skip = True
+        lines.append('```')
         lines.append(tests_output)
+        lines.append('```')
 
 with open(args.readme, 'w') as f:
     f.write('\n'.join(lines))

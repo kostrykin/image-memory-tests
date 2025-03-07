@@ -6,6 +6,7 @@ on:
     paths:
       - '**.py'
       - '.github/workflows/run-tests.yml'
+      - 'README.md'
 
 jobs:
   run_tests:
