@@ -33,8 +33,6 @@ Overall, using **pypng** seems to be most promising. The downside of it is that 
 ## Test results
 
 <!-- BEGIN TEST OUTPUT -->
-```
-```
 <!-- END TEST OUTPUT -->
 
 # See also
