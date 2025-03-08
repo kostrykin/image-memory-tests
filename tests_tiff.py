@@ -30,7 +30,7 @@ def test_tifffile_segment():
     assert int(peak_memory_usage) >= get_image_size_nbytes('test-data/img1.tiff')
 
 
-def test_tifffile_patchwise():
+def test_tifffile_mmap_patchwise():
     with get_peak_memory_usage() as peak_memory_usage:
         file = tifffile.TiffFile('test-data/img1.tiff')
         page = file.pages[0]

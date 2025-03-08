@@ -20,7 +20,7 @@ class PeakMemoryMonitor:
 
 def without_mmap(allocations):
     for a in allocations:
-        if any('mmap' in call[0] for call in a.stack_trace()):
+        if any('mmap' in call[1] and 'numpy' in call[1] for call in a.stack_trace()):
             continue
         else:
             yield a
