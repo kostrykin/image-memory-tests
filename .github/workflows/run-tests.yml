@@ -1,6 +1,8 @@
 name: Run tests
 
 on:
+  pull_request:
+    branches: ['*']
   push:
     branches: [master]
     paths:
@@ -38,8 +40,10 @@ jobs:
         run: |
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt
           rm tests-output.txt
+          cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push
+        if: github.event_name != 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Update tests results'
