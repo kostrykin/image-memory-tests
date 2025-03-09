@@ -21,14 +21,24 @@ pytest -s --durations=0 tests_*.py
 - **pyvips** comes with external dependencies and seems a bit too heavy-weight.
 - **pypng** is a PNG reader written entirely in Python, has no dependencies, and supports row-wise reading of PNG files. License is MIT.
 
-### What we have found:
+### Conclusion:
 
-Overall, using **pypng** seems to be most promising. The downside of it is that it is much slower than Pillow, for example.
+Overall, using **pypng** seems to be most promising. The downside of it is that it is much slower than Pillow.
 
 ## Chunked reading TIFF
 
-- **tifffile** does not directly support chunked reading. However, it *does* support reading TIFF files via memory mapping, which can be used to leverage chunked computation of the histogram. This is somewhat slower than reading an image into memory directly.
+### Findings:
+
+- **tifffile** supports chunked reading for TIFF files that are *tiled* (reading the tiles aka segments incrementally). This means, that the whole file does not have to be loaded entirely into memory. However, not all TIFF files are tiled, and even large TIFF files sometimes have just a single tile. In that case, loading the tile into memory would be equivalent to loading the entire image, which is discouraged.
+- **tifffile** also support reading TIFF files via memory mapping, that can be used for chunked processing of the image data. However, there are some pitfalls:
+  - This is somewhat slower than reading an image into memory directly (and can also be slower than loading the image tiles incrementally).
+  - According to our tests, TIFF files that are *uncompressed and tiled*, cannot be mapped into virtual memory (it looks like the memory is actually allocated). Strangely though, it *does* work for tiled TIFF files that are *compressed*. The take-home message here is, that it works for *some tiled* files, but not for others.
+- **rasterio** is too heavy-weight.
 - There seem to be no useful alternatives out there.
+
+### Conclusion:
+
+Large TIFF files can be first checked for whether they are tiled or not (i.e. if they have more than one segment). In case of a tiled TIFF file, *chunked reading* directly supported by **tifffile** can be leveraged. Otherwise, if there is only a single segment, the TIFF file can still be *mapped into virtual memory* and processed patch-wise, so that only small sections of the image data are loaded into memory, one at a time.
 
 ## Test results
 

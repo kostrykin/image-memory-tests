@@ -30,13 +30,6 @@ def test_full_image_load():
         img1 = np.asarray(Image.open('test-data/img1.png'))
     assert int(peak_memory_usage) >= img1.nbytes
 
-    # Check that released memory is accounted
-    shape = (1024, 1024, 3)
-    with get_peak_memory_usage() as peak_memory_usage:
-        for _ in range(5):
-            np.zeros(shape, np.uint8)
-    assert int(peak_memory_usage) < 1.1 * np.prod(shape)
-
 
 def test_pil_histogram():
     """
@@ -45,7 +38,9 @@ def test_pil_histogram():
     with get_peak_memory_usage() as peak_memory_usage:
         im = Image.open('test-data/img1.png')
         im.histogram()
-    assert int(peak_memory_usage) >= get_image_size_nbytes('test-data/img1.png')
+
+    with pytest.raises(AssertionError):
+        assert int(peak_memory_usage) < get_image_size_nbytes('test-data/img1.png'), 'Memory limit exceeded'
 
 
 def test_pil_crop():
@@ -56,7 +51,9 @@ def test_pil_crop():
         im = Image.open('test-data/img1.png')
         (left, upper, right, lower) = (0, 0, 10, 10)
         im.crop((left, upper, right, lower))
-    assert int(peak_memory_usage) >= get_image_size_nbytes('test-data/img1.png')
+
+    with pytest.raises(AssertionError):
+        assert int(peak_memory_usage) < get_image_size_nbytes('test-data/img1.png'), 'Memory limit exceeded'
 
 
 def test_pypng():

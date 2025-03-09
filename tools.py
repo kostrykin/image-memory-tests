@@ -1,21 +1,29 @@
 import contextlib
 import os
 import tempfile
+import time
 
 import memray
 import numpy as np
+import pytest
 
 
-class PeakMemoryMonitor:
+class ValueMonitor:
 
     def __init__(self):
         self.value = None
 
-    def __int__(self):
+    def _require_value(self):
         if self.value is None:
             raise ValueError('Value was not determined yet')
-        else:
-            return self.value
+
+    def __int__(self):
+        self._require_value()
+        return int(self.value)
+
+    def __float__(self):
+        self._require_value()
+        return float(self.value)
 
 
 def without_mmap(allocations):
@@ -33,7 +41,7 @@ def get_peak_memory_usage(exclude_mmap=True):
         temp_filepath = os.path.join(temp_dir_path, 'memray.bin')
         tracker = memray.Tracker(temp_filepath)
 
-        result = PeakMemoryMonitor()
+        result = ValueMonitor()
         with tracker:
             yield result
 
@@ -49,3 +57,23 @@ def get_hist(array):
     for value in range(len(hist)):
         hist[value] += (array == value).sum()
     return hist
+
+
+@contextlib.contextmanager
+def raises(error):
+    """
+    Extension of `pytest.raises` that also accepts `None` for `error` to indicate that no failure is expected.
+    """
+    if error is None:
+        yield
+    else:
+        with pytest.raises(error):
+            yield
+
+
+@contextlib.contextmanager
+def timeit():
+    result = ValueMonitor()
+    t0 = time.time()
+    yield result
+    result.value = time.time() - t0
