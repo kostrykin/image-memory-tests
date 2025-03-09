@@ -40,6 +40,7 @@ jobs:
         run: |
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt
           rm tests-output.txt
+          cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push
         if: github.event_name != 'pull_request'
@@ -47,9 +48,3 @@ jobs:
         with:
           commit_message: 'Update tests results'
           branch: ${{ github.head_ref }}
-
-      - uses: actions/upload-artifact@v4
-        if: github.event_name == 'pull_request'
-        with:
-          name: results
-          path: README.md
