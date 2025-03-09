@@ -43,15 +43,15 @@ tests_png.py ....
 tests_tiff.py ..
 
 ============================== slowest durations ===============================
-27.79s call     tests_png.py::test_pypng
-14.14s call     tests_tiff.py::test_tifffile_patchwise
+27.41s call     tests_png.py::test_pypng
+13.92s call     tests_tiff.py::test_tifffile_mmap_patchwise
 0.27s call     tests_png.py::test_pil_histogram
 0.25s call     tests_png.py::test_pil_crop
 0.17s call     tests_png.py::test_full_image_load
 0.02s call     tests_tiff.py::test_tifffile_segment
 
 (12 durations < 0.005s hidden.  Use -vv to show these durations.)
-============================== 6 passed in 42.82s ==============================
+============================== 6 passed in 42.21s ==============================
 ```
 <!-- END TEST OUTPUT -->
 
