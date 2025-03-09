@@ -1,6 +1,8 @@
 name: Run tests
 
 on:
+  pull_requests:
+    branches: ['*']
   push:
     branches: [master]
     paths:
@@ -40,6 +42,7 @@ jobs:
           rm tests-output.txt
 
       - name: Commit and push
+        if: github.event_name != 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Update tests results'
