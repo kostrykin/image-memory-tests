@@ -38,7 +38,7 @@ Overall, using **pypng** seems to be most promising. The downside of it is that 
 
 ### Conclusion:
 
-Large TIFF files can be first checked for whether they are tiled or not (i.e. if they have more than one segment). In case of a tiled TIFF file, *chunked reading* directly supported by **tifffile** can be leveraged. Apparently, this is the same thing that rasterio does ([link](https://github.com/kostrykin/image-memory-tests/issues/1#issuecomment-2709021342)). If there is only a single segment, then chunked reading is not feasible, but the TIFF file can still be *mapped into virtual memory* and processed patch-wise, so that only small sections of the image data are loaded into memory, one at a time. This strategy should be at least as efficient as what rasterio does.
+Large TIFF files can be first checked for whether they are tiled or not (i.e. if they have more than one segment). In case of a tiled TIFF file, *chunked reading* directly supported by **tifffile** can be leveraged. Apparently, this is the same thing that rasterio does ([link](https://github.com/kostrykin/image-memory-tests/issues/1#issuecomment-2709021342)). If there is only a single segment, then chunked reading is inefficient, but the TIFF file can still be *mapped into virtual memory* and processed patch-wise, so that only small sections of the image data are loaded into memory, one at a time. This combined strategy of *chunked reading* and *memory mapping* should be at least as efficient as what rasterio does.
 
 ## Test results
 
