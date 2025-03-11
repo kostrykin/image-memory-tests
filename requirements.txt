@@ -3,3 +3,4 @@ tifffile==2024.8.30
 memray
 pytest
 pypng==0.20220715.0
+rasterio==1.4.3

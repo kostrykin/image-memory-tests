@@ -1,0 +1,7 @@
+Function,Filename,Runtime (seconds),Memory usage (MiB)
+count_unique_values_rasterio,img1.tiff,0.4283778667449951,32171.1455078125
+count_unique_values_rasterio,img1_czlib.tiff,0.14687800407409668,31588.029296875
+count_unique_values_rasterio,img1_tiled.tiff,0.4592900276184082,33799.2373046875
+tifffile_hist_combined,img1.tiff,4.648221969604492,180.00390625
+tifffile_hist_combined,img1_czlib.tiff,1.9689667224884033,1070.201171875
+tifffile_hist_combined,img1_tiled.tiff,5.991206884384155,2604.0732421875

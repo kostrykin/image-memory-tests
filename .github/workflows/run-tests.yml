@@ -42,6 +42,10 @@ jobs:
           rm tests-output.txt
           cat README.md >> $GITHUB_STEP_SUMMARY
 
+      - name: Run benchmark
+        run: |
+          python benchmark.py > benchmark.csv
+
       - name: Commit and push
         if: github.event_name != 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
