@@ -1,5 +1,6 @@
 import numpy as np
 import pytest
+import rasterio
 import tifffile
 
 from tools import (
@@ -17,6 +18,29 @@ def get_image_size_nbytes(filepath):
 def get_image_hist(filepath):
     arr = tifffile.imread(filepath)
     return get_hist(arr)
+
+
+def rasterio_hist_patchwise(filepath):
+    hist = np.zeros(256, int)
+    with rasterio.open(filepath) as src:
+        for _, window in src.block_windows(1):
+            data = src.read(1, window=window)
+            hist += get_hist(data)
+    return hist
+
+
+@pytest.mark.parametrize(
+    'filename',
+    [
+        'img1.tiff',
+        'img1_czlib.tiff',
+        'img1_tiled.tiff',
+    ],
+)
+def test_rasterio_patchwise(filename):
+    hist = get_image_hist('test-data/img1.tiff')
+    hist2 = rasterio_hist_patchwise(f'test-data/{filename}')
+    assert (hist == hist2).all()
 
 
 def tifffile_read_segments(filepath):

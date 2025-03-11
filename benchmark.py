@@ -2,28 +2,18 @@
 
 import csv
 import sys
-from collections import Counter
 
 import numpy as np
-import rasterio
 
-from tests_tiff import tifffile_hist_combined
+from tests_tiff import (
+    rasterio_hist_patchwise,
+    tifffile_hist_combined,
+)
 from tools import (
+    get_hist,
     get_peak_memory_usage,
     timeit,
 )
-
-
-def count_unique_values_rasterio(file_path):
-    counter = Counter()
-
-    with rasterio.open(file_path) as src:
-        for _, window in src.block_windows(1):  # Read in small windows
-            data = src.read(1, window=window)  # Read only the small chunk
-            unique, counts = np.unique(data, return_counts=True)
-            counter.update(dict(zip(unique, counts)))
-
-    return len(counter)
 
 
 def benchmark(func, *args):
@@ -41,8 +31,8 @@ filenames = [
     'img1_tiled.tiff',
 ]
 func_list = [
+    rasterio_hist_patchwise,
     tifffile_hist_combined,
-    count_unique_values_rasterio,
 ]
 results = dict()
 for filename in filenames:
@@ -62,7 +52,7 @@ rows = [
 for ((filename, func), (runtime, peak_memory_usage)) in sorted(results.items(), key=lambda r: r[0][::-1]):
     rows.append(
         [
-            func,
+            f'`{func}`',
             filename,
             runtime,
             peak_memory_usage / (1024 ** 2),
