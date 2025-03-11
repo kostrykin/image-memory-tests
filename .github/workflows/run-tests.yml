@@ -46,6 +46,12 @@ jobs:
         run: |
           python benchmark.py > benchmark.csv
 
+      - uses: actions/upload-artifact@v4
+-        if: github.event_name == 'pull_request'
+-        with:
+-          name: benchmark
+-          path: benchmark.csv
+
       - name: Commit and push
         if: github.event_name != 'pull_request'
         uses: stefanzweifel/git-auto-commit-action@v5
