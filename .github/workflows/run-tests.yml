@@ -38,25 +38,12 @@ jobs:
 
       - name: Run benchmark
         run: |
-          python benchmark.py > benchmark.csv
-
-      - name: Read benchmark CSV
-        id: benchmark_csv
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ./benchmark.csv
-
-      - name: Create benchmark Markdown
-        uses: petems/csv-to-md-table-action@v4.0.0
-        id: benchmark_md
-        with:
-          csvinput: ${{ steps.benchmark_csv.outputs.content }}
+          python benchmark.py | python .github/csv2md.py >> benchmark-output.md
 
       - name: Update README.md
         run: |
-          echo "${{ steps.benchmark_md.outputs.markdown-table }}" >> benchmark-output.md
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt --benchmark-output benchmark-output.md
-          rm tests-output.txt benchmark-output.*
+          rm tests-output.txt benchmark-output.md
           cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push
