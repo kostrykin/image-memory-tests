@@ -47,7 +47,7 @@ jobs:
           path: ./benchmark.csv
 
       - name: Create benchmark Markdown
-        uses: petems/csv-to-md-table-action@v4
+        uses: petems/csv-to-md-table-action@v4.0.0
         id: benchmark_md
         with:
           csvinput: ${{ steps.benchmark_csv.outputs.content }}
