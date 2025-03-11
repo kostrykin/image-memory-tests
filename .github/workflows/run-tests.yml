@@ -56,7 +56,7 @@ jobs:
         run: |
           echo "${{ steps.benchmark_md.outputs.markdown-table }}" >> benchmark-output.md
           python .github/update_readme.py --readme README.md --tests-output tests-output.txt --benchmark-output benchmark-output.md
-          rm tests-output.txt
+          rm tests-output.txt benchmark-output.*
           cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push

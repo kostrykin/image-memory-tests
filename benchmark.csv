@@ -1,7 +1,0 @@
-Function,Filename,Runtime (seconds),Memory usage (MiB)
-`rasterio_hist_patchwise`,img1.tiff,7.977292060852051,31.427678108215332
-`rasterio_hist_patchwise`,img1_czlib.tiff,2.0580809116363525,30.888365745544434
-`rasterio_hist_patchwise`,img1_tiled.tiff,14.948441982269287,33.004313468933105
-`tifffile_hist_combined`,img1.tiff,4.6361048221588135,0.17578506469726562
-`tifffile_hist_combined`,img1_czlib.tiff,2.099336862564087,1.0451183319091797
-`tifffile_hist_combined`,img1_tiled.tiff,5.945971250534058,2.5430402755737305
