@@ -71,7 +71,12 @@ tests_tiff.py .........
 (29 durations < 0.005s hidden.  Use -vv to show these durations.)
 ======================== 14 passed in 133.66s (0:02:13) ========================
 ```
-<!-- END TEST OUTPUT -->
+<!-- END OUTPUT -->
+
+## Benchmark results
+
+<!-- BEGIN BENCHMARK OUTPUT -->
+<!-- END OUTPUT -->
 
 # See also
 

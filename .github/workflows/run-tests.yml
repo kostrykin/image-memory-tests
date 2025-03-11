@@ -36,21 +36,28 @@ jobs:
         run: |
           pytest -s --durations=0 tests_*.py >> tests-output.txt
 
-      - name: Update README.md
-        run: |
-          python .github/update_readme.py --readme README.md --tests-output tests-output.txt
-          rm tests-output.txt
-          cat README.md >> $GITHUB_STEP_SUMMARY
-
       - name: Run benchmark
         run: |
           python benchmark.py > benchmark.csv
 
-      - uses: actions/upload-artifact@v4
-        if: github.event_name == 'pull_request'
+      - name: Read benchmark CSV
+        id: benchmark_csv
+        uses: juliangruber/read-file-action@v1
         with:
-          name: benchmark
-          path: benchmark.csv
+          path: ./benchmark.csv
+
+      - name: Create benchmark Markdown
+        uses: petems/csv-to-md-table-action@v4
+        id: benchmark_md
+        with:
+          csvinput: ${{ steps.benchmark_csv.outputs.content }}
+
+      - name: Update README.md
+        run: |
+          echo "${{ steps.benchmark_md.outputs.markdown-table }}" >> benchmark-output.md
+          python .github/update_readme.py --readme README.md --tests-output tests-output.txt --benchmark-output benchmark-output.md
+          rm tests-output.txt
+          cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push
         if: github.event_name != 'pull_request'
