@@ -15,6 +15,9 @@ with open(args.readme) as f:
 with open(args.tests_output) as f:
     tests_output = f.read().strip()
 
+with open(args.benchmark_output) as f:
+    benchmark_output = f.read().strip()
+
 lines = list()
 skip = False
 
