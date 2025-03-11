@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 import rasterio
 import tifffile
+import warnings
 
 from tools import (
     get_hist,
@@ -22,11 +23,13 @@ def get_image_hist(filepath):
 
 def rasterio_hist_patchwise(filepath):
     hist = np.zeros(256, int)
-    with rasterio.open(filepath) as src:
-        for _, window in src.block_windows(1):
-            for bidx in range(src.count):
-                data = src.read(1 + bidx, window=window)
-                hist += get_hist(data)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', rasterio.errors.NotGeoreferencedWarning)
+        with rasterio.open(filepath) as src:
+            for _, window in src.block_windows(1):
+                for bidx in range(src.count):
+                    data = src.read(1 + bidx, window=window)
+                    hist += get_hist(data)
     return hist
 
 
