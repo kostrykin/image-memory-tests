@@ -33,9 +33,7 @@ for line in readme.split('\n'):
         lines.append('```')
     if line == '<!-- BEGIN BENCHMARK OUTPUT -->':
         skip = True
-        lines.append('```')
         lines.append(benchmark_output)
-        lines.append('```')
 
 with open(args.readme, 'w') as f:
     f.write('\n'.join(lines))
