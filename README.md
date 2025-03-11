@@ -47,35 +47,46 @@ Large TIFF files can be first checked for whether they are tiled or not (i.e. if
 ============================= test session starts ==============================
 platform linux -- Python 3.12.9, pytest-8.3.5, pluggy-1.5.0
 rootdir: /home/runner/work/image-memory-tests/image-memory-tests
-collected 14 items
+collected 17 items
 
 tests_aux.py .
 tests_png.py ....
-tests_tiff.py .........
+tests_tiff.py ............
 
 ============================== slowest durations ===============================
-26.45s call     tests_png.py::test_pypng
-24.81s call     tests_tiff.py::test_tifffile_combined[img1_tiled.tiff]
-16.84s call     tests_tiff.py::test_tifffile_combined[img1.tiff]
-16.71s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1.tiff-None]
-16.09s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1_tiled.tiff-AssertionError]
-15.51s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1_czlib.tiff-None]
-10.84s call     tests_tiff.py::test_tifffile_runtime_mmap_vs_segments
-5.42s call     tests_tiff.py::test_tifffile_combined[img1_czlib.tiff]
-0.30s call     tests_png.py::test_pil_histogram
-0.29s call     tests_png.py::test_pil_crop
-0.17s call     tests_png.py::test_full_image_load
-0.02s call     tests_tiff.py::test_tifffile_segment
-0.01s call     tests_aux.py::test_memory_monitoring
+34.31s call     tests_tiff.py::test_rasterio_patchwise[img1_tiled.tiff]
+27.00s call     tests_png.py::test_pypng
+25.18s call     tests_tiff.py::test_tifffile_combined[img1_tiled.tiff]
+20.13s call     tests_tiff.py::test_rasterio_patchwise[img1.tiff]
+17.00s call     tests_tiff.py::test_tifffile_combined[img1.tiff]
+16.88s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1.tiff-None]
+16.62s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1_tiled.tiff-AssertionError]
+16.14s call     tests_tiff.py::test_tifffile_mmap_patchwise[img1_czlib.tiff-None]
+11.35s call     tests_tiff.py::test_tifffile_runtime_mmap_vs_segments
+5.63s call     tests_tiff.py::test_rasterio_patchwise[img1_czlib.tiff]
+5.61s call     tests_tiff.py::test_tifffile_combined[img1_czlib.tiff]
+0.33s call     tests_png.py::test_pil_histogram
+0.32s call     tests_png.py::test_pil_crop
+0.20s call     tests_png.py::test_full_image_load
+0.03s call     tests_tiff.py::test_tifffile_segment
+0.03s call     tests_aux.py::test_memory_monitoring
 
-(29 durations < 0.005s hidden.  Use -vv to show these durations.)
-======================== 14 passed in 133.66s (0:02:13) ========================
+(35 durations < 0.005s hidden.  Use -vv to show these durations.)
+======================== 17 passed in 197.04s (0:03:17) ========================
 ```
 <!-- END OUTPUT -->
 
 ## Benchmark results
 
 <!-- BEGIN BENCHMARK OUTPUT -->
+| Function                  | Filename        |   Runtime (seconds) |   Memory usage (MiB) |
+|---------------------------|-----------------|---------------------|----------------------|
+| `rasterio_hist_patchwise` | img1.tiff       |            17.2943  |            31.428    |
+| `rasterio_hist_patchwise` | img1_czlib.tiff |             2.8368  |            30.8933   |
+| `rasterio_hist_patchwise` | img1_tiled.tiff |            31.8752  |            33.0092   |
+| `tifffile_hist_combined`  | img1.tiff       |             8.61437 |             0.150497 |
+| `tifffile_hist_combined`  | img1_czlib.tiff |             2.697   |             1.03949  |
+| `tifffile_hist_combined`  | img1_tiled.tiff |            12.017   |             2.54209  |
 <!-- END OUTPUT -->
 
 # See also
