@@ -24,8 +24,9 @@ def rasterio_hist_patchwise(filepath):
     hist = np.zeros(256, int)
     with rasterio.open(filepath) as src:
         for _, window in src.block_windows(1):
-            data = src.read(1, window=window)
-            hist += get_hist(data)
+            for bidx in range(src.count):
+                data = src.read(1 + bidx, window=window)
+                hist += get_hist(data)
     return hist
 
 
