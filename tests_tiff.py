@@ -1,6 +1,8 @@
 import numpy as np
 import pytest
+import rasterio
 import tifffile
+import warnings
 
 from tools import (
     get_hist,
@@ -17,6 +19,32 @@ def get_image_size_nbytes(filepath):
 def get_image_hist(filepath):
     arr = tifffile.imread(filepath)
     return get_hist(arr)
+
+
+def rasterio_hist_patchwise(filepath):
+    hist = np.zeros(256, int)
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore', rasterio.errors.NotGeoreferencedWarning)
+        with rasterio.open(filepath) as src:
+            for _, window in src.block_windows(1):
+                for bidx in range(src.count):
+                    data = src.read(1 + bidx, window=window)
+                    hist += get_hist(data)
+    return hist
+
+
+@pytest.mark.parametrize(
+    'filename',
+    [
+        'img1.tiff',
+        'img1_czlib.tiff',
+        'img1_tiled.tiff',
+    ],
+)
+def test_rasterio_patchwise(filename):
+    hist = get_image_hist('test-data/img1.tiff')
+    hist2 = rasterio_hist_patchwise(f'test-data/{filename}')
+    assert (hist == hist2).all()
 
 
 def tifffile_read_segments(filepath):
@@ -91,6 +119,18 @@ def tifffile_hist_segments(filepath):
     return hist
 
 
+def tifffile_hist_combined(filepath):
+    file = tifffile.TiffFile(filepath)
+    page = file.pages[0]
+
+    if len(page.dataoffsets) > 1:
+        # This is a tiled TIFF
+        return tifffile_hist_segments(filepath)
+    else:
+        # This is not a tiled TIFF
+        return tifffile_hist_mmap_patchwise(filepath)
+
+
 @pytest.mark.parametrize(
     'filename',
     [
@@ -103,15 +143,7 @@ def test_tifffile_combined(filename):
     hist = get_image_hist('test-data/img1.tiff')
     filepath = f'test-data/{filename}'
     with get_peak_memory_usage() as peak_memory_usage:
-        file = tifffile.TiffFile(filepath)
-        page = file.pages[0]
-
-        if len(page.dataoffsets) > 1:
-            # This is a tiled TIFF
-            hist2 = tifffile_hist_segments(filepath)
-        else:
-            # This is not a tiled TIFF
-            hist2 = tifffile_hist_mmap_patchwise(filepath)
+        hist2 = tifffile_hist_combined(filepath)
 
     assert int(peak_memory_usage) < get_image_size_nbytes('test-data/img1.tiff'), 'Memory limit exceeded'
     assert (hist == hist2).all()

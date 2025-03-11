@@ -6,6 +6,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--readme', type=str, required=True)
 parser.add_argument('--tests-output', type=str, required=True)
+parser.add_argument('--benchmark-output', type=str, required=True)
 args = parser.parse_args()
 
 with open(args.readme) as f:
@@ -14,11 +15,14 @@ with open(args.readme) as f:
 with open(args.tests_output) as f:
     tests_output = f.read().strip()
 
+with open(args.benchmark_output) as f:
+    benchmark_output = f.read().strip()
+
 lines = list()
 skip = False
 
 for line in readme.split('\n'):
-    if line == '<!-- END TEST OUTPUT -->':
+    if line == '<!-- END OUTPUT -->':
         skip = False
     if not skip:
         lines.append(line)
@@ -27,6 +31,9 @@ for line in readme.split('\n'):
         lines.append('```')
         lines.append(tests_output)
         lines.append('```')
+    if line == '<!-- BEGIN BENCHMARK OUTPUT -->':
+        skip = True
+        lines.append(benchmark_output)
 
 with open(args.readme, 'w') as f:
     f.write('\n'.join(lines))

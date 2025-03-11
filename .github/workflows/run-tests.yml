@@ -36,10 +36,14 @@ jobs:
         run: |
           pytest -s --durations=0 tests_*.py >> tests-output.txt
 
+      - name: Run benchmark
+        run: |
+          python benchmark.py | python .github/csv2md.py >> benchmark-output.md
+
       - name: Update README.md
         run: |
-          python .github/update_readme.py --readme README.md --tests-output tests-output.txt
-          rm tests-output.txt
+          python .github/update_readme.py --readme README.md --tests-output tests-output.txt --benchmark-output benchmark-output.md
+          rm tests-output.txt benchmark-output.md
           cat README.md >> $GITHUB_STEP_SUMMARY
 
       - name: Commit and push
