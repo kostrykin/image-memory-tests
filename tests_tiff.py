@@ -64,7 +64,7 @@ def tifffile_hist_mmap_patchwise(filepath):
     arr = page.asarray(out='memmap')
 
     hist = np.zeros(256, int)
-    window_size = (64, 64, 3)
+    window_size = (64, 64, 3)[:arr.ndim]
     steps = np.divide(arr.shape, window_size).astype(int)
     for step in np.ndindex(*steps):
         p = np.multiply(window_size, step)

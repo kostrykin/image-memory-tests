@@ -29,6 +29,7 @@ filenames = [
     'img1.tiff',
     'img1_czlib.tiff',
     'img1_tiled.tiff',
+    'slow.tiff',
 ]
 func_list = [
     rasterio_hist_patchwise,
